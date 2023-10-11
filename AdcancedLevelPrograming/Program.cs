@@ -106,21 +106,24 @@
 
 #region Delegate ile method temsil etme
 
-XHandler xDelegate = (string a) => a + " Merhaba nasılsın ?";
+//XHandler xDelegate = (string a) => a + " Merhaba nasılsın ?";
 
-string deger = xDelegate.Invoke("Eyüp");
+//string deger = xDelegate.Invoke("Eyüp");
 
-Console.WriteLine(deger);
+//Console.WriteLine(deger);
 
-public delegate string XHandler(string a);
+//public delegate string XHandler(string a);
 
 // Bunlardan farklı olarak ise dışarıda herhangi bir method var ve delegate ile uyumulu ise direkt onun değerini de verebiliriz,
 // istersek direkt new() operatörü ile de kullanabiliriz.
 
+// Eğer delegate'leri kullanmak istersek direkt oluşturulan değerleri üzerinde işlem yapabiliriz. Değerin üzerinden
+// Invoke() fonksiyonunun çağırarak ya da çağırmayarak işlemleri yaparız eğer çağırmazsak compiler kendi arka planda Invoke() fonksiyonunun çağırıcaktır.
+// Invoke() fonksiyonu kullandığımız delegate'i senkron olarak çalıştırmaya yarar.
 
-// Nasıl kullanılır ? 
+// Bir delegate'e birden fazla methodu temsil için verebiliriz bunu sağlamak için += operatörü yeterlidir.
 
-
+// Delegate'ler Generic olarak yapılandırılabilir.
 
 
 #endregion

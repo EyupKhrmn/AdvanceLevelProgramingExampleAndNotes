@@ -83,8 +83,48 @@
 
 // şeklinde de kullanılabilirler.
 
+// Bir delegate nasıl tanımlanır => public delegate void X(int a, string b);
+
+// Delegate'lerin sonuna handler yazılır, isimlendirme geleneğidir.
+
+// Delegate'ler özünde bir classdır. Herhangi bir methodu delegate ile temsil etmek için delegate'den bir nesne üretmeniz gerekir.
+
+// ÖNEMLİ!!! => Delegate'ler referans türlü yapılardır...
+
+#region Delegate Tanımı
+//// Geriye değer döndürmeyen ve Parametre almayan tüm methodları temsil edebilecek Delegate
+//public delegate void XHandler();
+
+//// Geriye int ve char tipinde bir tupple döndürecek ve parametre olarak da A türünde ve (string,int) şeklinde bir tupple alan methodları temsil edecek olan Delegate
+//public delegate (int, char) YHandler(A a, (string,int) p);
+
+//public class A
+//{
+
+//}
+#endregion
+
+#region Delegate ile method temsil etme
+
+XHandler xDelegate = (string a) => a + " Merhaba nasılsın ?";
+
+string deger = xDelegate.Invoke("Eyüp");
+
+Console.WriteLine(deger);
+
+public delegate string XHandler(string a);
+
+// Bunlardan farklı olarak ise dışarıda herhangi bir method var ve delegate ile uyumulu ise direkt onun değerini de verebiliriz,
+// istersek direkt new() operatörü ile de kullanabiliriz.
+
+
+// Nasıl kullanılır ? 
+
+
 
 
 #endregion
 
-Console.WriteLine();
+
+
+#endregion

@@ -176,40 +176,59 @@
 
 // Belirli bir dizinde boyut  5MB' ı geçtiği takdirde uyaran bir olay(event) oluşturalım.
 
-//string path = @"C:\Users\Eyup\RiderProjects";
-
-//PathControl pathControl = new();
-
-//pathControl.PathControlEvent += () =>
-//{
-//    Console.WriteLine("Boyut 50MB'ı aştı !!");
-//};
-
-//await pathControl.Control(path);
-
-//class PathControl
-//{
-//    public delegate void PathHandler();
-//    public event PathHandler PathControlEvent;
-
-//    public async Task Control(string path)
-//    {
-//        while (true)
-//        {
-//            await Task.Delay(1000);
-//            DirectoryInfo directoryInfo = new(path);
-//            var files = directoryInfo.GetFiles();
-//            var size = await Task.Run(() => directoryInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length));
-//            var sizeMB = (size / 1024) / 1024;
-
-
-//            if (sizeMB > 50)
-//                PathControlEvent();
-//        }
-//    }
-//}
-
+// string path = @"C:\Users\Eyup\RiderProjects";
+//
+// PathControl pathControl = new();
+//
+// pathControl.PathControlEvent += () =>
+// {
+//     Console.WriteLine("Boyut 50MB'ı aştı !!");
+// };
+//
+// await pathControl.Control(path);
+//
+// class PathControl
+// {
+//     public delegate void PathHandler();
+//     public event PathHandler PathControlEvent;
+//
+//     public async Task Control(string path)
+//     {
+//         while (true)
+//         {
+//             await Task.Delay(1000);
+//             DirectoryInfo directoryInfo = new(path);
+//             var files = directoryInfo.GetFiles();
+//             var size = await Task.Run(() => directoryInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length));
+//             var sizeMB = (size / 1024) / 1024;
+//
+//
+//             if (sizeMB > 50)
+//                 PathControlEvent();
+//         }
+//     }
+// }
 
 // İleri seviye programalada eventler genelde microservice uygulamalarında kullanılır.
+
+#endregion
+
+#region Önceden Tanımlanmış Delegate Türleri
+
+// Action => geriye değer dödürmeyen tüm methodları temsil eden delegate'dir. Parametre ya almaz ya da istediği kadar alır. Generic türü vardır.
+// ÖRN => Action deneme = () => {}
+
+// Action deneme = () => Console.WriteLine("Action");
+
+
+// Func => Kesinlikle generic yapıdadır. Eğer birden fazla parametere alırsa son aldığı parametre türünde geriye değer döndürür.
+// Generic olarak aldığı parametre türünde kesinlikle geriye değer döndürmelidir.
+// ÖRN => Func<XClass> deneme = () => new();
+
+// Func<string> deneme = () => "Func";
+
+
+// Predicate => Generic olan ve Generic parametredeki türden parametre alan, geriye boolean türden veri dönen methodları temsi eden delegate'dir.
+// ÖRN => Predicate<int> predicate = i => true;
 
 #endregion

@@ -90,6 +90,7 @@
 // Delegate'ler özünde bir classdır. Herhangi bir methodu delegate ile temsil etmek için delegate'den bir nesne üretmeniz gerekir.
 
 // ÖNEMLİ!!! => Delegate'ler referans türlü yapılardır...
+// ÖNEMLİ!!! => Delegate'lere public olsalar bile instance üzerinden erişilemez.
 
 #region Delegate Tanımı
 //// Geriye değer döndürmeyen ve Parametre almayan tüm methodları temsil edebilecek Delegate
@@ -133,5 +134,82 @@
 #endregion
 
 #region Event Yapısı
+
+// Herhangi bir olaya tepki vermek için gerekli olan yapılardır. Bu olayların gerçekleştiği veya gerçekleşmediğini izlemeye yarayan,
+// ve bunun sonrasında gerekli işlemleri yapmamızı sağlayan yapılardır. Aynı zamanda olayların kayıtlarını tutmamızı da sağlar.
+
+// eventler delegate ile birlikte kullanılmalıdır. 
+
+// Eventlerin türleri delegate'lerdir. Herhangi bir durumun olduğu anda herhangi birşey gerçekleştirmek istersek bunun eventlerin içinde yapabiliriz.
+
+
+//using System.Xml.Serialization;
+
+
+//MyEventPublisher publisher = new();
+//publisher.MyEvent += () =>
+//{
+//    Console.WriteLine("Event Tetiklendi");
+//};
+
+//publisher.RaiseEvent();
+
+//class MyEventPublisher
+//{
+//    public delegate void XHandler();
+//    public event XHandler MyEvent;
+
+//    public void RaiseEvent()
+//    {
+
+//         event fırlatılmış oldu...
+//        MyEvent();
+//}
+//}
+
+// Herhangi bir evente yeni bir delegate eklemek için += operatörünü kullanırız aynı zamanda herhangi bir methodu çıkarmak istersek de -= kullanmamız yeterlidir.
+// Bu yapı Winform uygulamalarının arka kısmında işleyen yapı ile aynı yapıdadır.
+
+#endregion
+
+#region Delegate ve Event Örnek
+
+// Belirli bir dizinde boyut  5MB' ı geçtiği takdirde uyaran bir olay(event) oluşturalım.
+
+//string path = @"C:\Users\Eyup\RiderProjects";
+
+//PathControl pathControl = new();
+
+//pathControl.PathControlEvent += () =>
+//{
+//    Console.WriteLine("Boyut 50MB'ı aştı !!");
+//};
+
+//await pathControl.Control(path);
+
+//class PathControl
+//{
+//    public delegate void PathHandler();
+//    public event PathHandler PathControlEvent;
+
+//    public async Task Control(string path)
+//    {
+//        while (true)
+//        {
+//            await Task.Delay(1000);
+//            DirectoryInfo directoryInfo = new(path);
+//            var files = directoryInfo.GetFiles();
+//            var size = await Task.Run(() => directoryInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length));
+//            var sizeMB = (size / 1024) / 1024;
+
+
+//            if (sizeMB > 50)
+//                PathControlEvent();
+//        }
+//    }
+//}
+
+
+// İleri seviye programalada eventler genelde microservice uygulamalarında kullanılır.
 
 #endregion

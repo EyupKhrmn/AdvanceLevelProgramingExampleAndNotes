@@ -232,3 +232,58 @@
 // ÖRN => Predicate<int> predicate = i => true;
 
 #endregion
+
+#region Anonymous Structures
+
+#region Anonymous Objects
+
+// Person nesensi herhangi bir alanda yalnızca bir kere kullanılacağı zaman (Person nesnesi üzerinde değil herhangi bir tip sınıfa tek seferlik
+// ihtiyacımız var ise) kullanılması mantıklı olan yapılardır.
+
+// var person = new
+// {
+//     Name = "Eyup",
+//     Surname = "Kahraman"
+// };
+
+// Anonymous Objects'lerde prop'lar yalnızca readonly olarak ayarlanır herhangi bir manipülasyon yapılamaz yalnızca get işlemi yapılabilir.
+#endregion
+
+#region Anonymous Methods
+
+
+// Delegate İle belirli bir methodu kullanma yani Anonymous değil.
+// Topla topla = new Topla(Toplama);
+//
+// int Toplama(int a, int b)
+// {
+//     return a + b;
+// }
+// delegate int Topla(int a, int b);
+
+// Delegate İle belirsiz bir methodu kullanma yani Anonymous.
+// Topla topla = (a,b) => a + b;
+
+// Anonymous methodları illa delegate ile kullanmak zorunda değiliz var keywordu ile de kullanabiliriz.
+// var deneme = (int a,int b) => a + b;
+
+#endregion
+
+#region Anonymous Collection
+
+// // Array
+// using Microsoft.VisualBasic;
+//
+// var x = new[] { 3, 5 };
+//
+// // Collection
+// var y = new Collection()
+// {
+//     new { a = 3 },
+//     new { b = "Hello" }
+// };
+
+#endregion
+
+
+#endregion

@@ -287,3 +287,31 @@
 
 
 #endregion
+
+#region Expando Objects
+
+//dynamic expandoObject = new ExpandoObject();
+
+//expandoObject.Name = "Eyup";
+//expandoObject.Surname = "Kahraman";
+//expandoObject.City = "Istanbul";
+//expandoObject.Age = 61;
+
+// Şeklinde kullanılan yapılardır. Gerekli cevap verme işlemlerinde hazır bir yapı kullanmaktansa o an istenen verileri dönmeye yarayan bir yapıdır.
+
+#endregion
+
+#region Access Modifiers
+
+// public
+// private
+// protected
+// internal
+// protected internal
+// private protected
+
+// şeklinde 6 tane erişim belirleyici vardır
+
+#endregion
+
+Console.WriteLine();

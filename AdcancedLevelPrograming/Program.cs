@@ -369,6 +369,7 @@
 
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 
 Person p1 = new() { Name = "Eyup", Age = 21 };
 
@@ -429,7 +430,7 @@ public class Person : ICloneable, IComparable<Person> , INotifyPropertyChanged
     //IClonable interface'i ile bir nesneyi kopyalamak istediğimizde kullanabiliriz.
     public object Clone()
     {
-        throw new NotImplementedException();
+        return this.MemberwiseClone();
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

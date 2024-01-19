@@ -367,6 +367,7 @@
 
 #region INotifyPropertyChanged
 
+using System.Collections;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
@@ -389,14 +390,24 @@ p1.PropertyChanged += (sender, args) =>
 //set methodunun içerisinde yapılması doğru olacaktır.
 #endregion
 
-#region IEquatable
+#region IEnumarable
 
+//Bir nesenenin üzerinden foreach döngüsü ile dolaşmak istediğimizde kullanabiliriz. 
+// aslında forech döngüsü ile dolaşmak istediğimiz nesnenin içerisinde GetEnumerator() methodu olması yeterlidir.
+// IEnumarable ile IQueryable arasındaki fark ise IQueryable'in veritabanı sorgularına daha ulaşmamış olması, IEnumrable ise veritabanı sorgularına ulaşmış olması 
+// ve bellekte sorgulanabilir olarak tutulmasıdır. Bu sayede implemente edilen nesnelerin üzerinden ef core sorgularına benzer sorgular yapılabilir.
 
 
 #endregion
 
+#region IDesposable
 
-public class Person : ICloneable, IComparable<Person> , INotifyPropertyChanged
+// verilerin veya implemente edildiği class'ın bellekten silinmebilecek haline gelmesini sağlar. Tüm değerlerini null olarak ayarlar
+// ve garbage collector tarafından silinmesini sağlar. 
+
+#endregion
+
+public class Person : ICloneable, IComparable<Person> , INotifyPropertyChanged, IEnumerable, IDisposable
 {
     public string Name { get; set; }
 
@@ -434,6 +445,19 @@ public class Person : ICloneable, IComparable<Person> , INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
+    
+    //IEnumarable interface'i ile bir nesnenin üzerinden foreach döngüsü ile dolaşmak istediğimizde kullanabiliriz.
+    public IEnumerator GetEnumerator()
+    {
+        throw new NotImplementedException();
+    }
+
+    
+    //IDisposable interface'i ile bir nesnenin bellekten silinmesini sağlar.
+    public void Dispose()
+    {
+        // TODO release managed resources here
+    }
 }
 
 

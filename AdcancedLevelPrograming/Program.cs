@@ -314,4 +314,126 @@
 
 #endregion
 
-Console.WriteLine();
+#region Özel Tanımlı Interfaceler
+
+#region IComparer
+
+//Person p1 = new() { Name = "Eyup", Age = 21 };
+//Person p2 = new() { Name = "Kahraman", Age = 21 };
+//
+//public class AgeComparer : IComparer<Person>
+//{
+//    public int Compare(Person x, Person y)
+//    {
+//        if (ReferenceEquals(x, y)) return 0;
+//        if (ReferenceEquals(null, y)) return 1;
+//        if (ReferenceEquals(null, x)) return -1;
+//        var nameComparison = string.Compare(x.Name, y.Name, StringComparison.Ordinal);
+//        if (nameComparison != 0) return nameComparison;
+//        
+//        //Basit Şekilde Comparer etmek istersen aşağıdaki gibi yapabilirsin.
+//        //Eğer değerler eşit ise sıfır döndürür. İlk değer büyük ise 1, ikinci değer büyük ise -1 döndürür.
+//        return x.Age.CompareTo(y.Age);
+//    }
+//}
+
+#endregion
+
+#region IComparable
+
+//IComparable interface'i ile bir nesneyi karşılaştırabiliriz. Bu interface'i kullanmak için IComparable<T> şeklinde bir yapılandırma yapmamız gerekir.
+// Bu yapılandırma yapılırken T yerine karşılaştırılacak olan nesnenin türü yazılır. Bu interface'i kullanmak için CompareTo() methodunu kullanmamız gerekir.
+// Bu İnterface'i sınıfın kendisine vermemiz gerekir generic olan parametresi ise kendi türünden olmalıdır.
+
+//Person p1 = new() { Name = "Eyup", Age = 21 };
+//Person p2 = new() { Name = "Kahraman", Age = 21 };
+//
+//var result = p1.CompareTo(p2);
+//
+#endregion
+
+#region IClonable
+
+//Örnek vermek gerekirse bir nesneyi kopyalamak istediğimizde kullanabiliriz. Özellikle Üretilecek olan nesnelerin Ctor'larında çok fazla parametre var ise
+// ve bu parametrelerin hepsini tekrar tekrar yazmak istemiyorsak bu interface'i kullanabiliriz.
+
+
+//public class Person : ICloneable şeklinde İstenilen class'a implemente edilir. gelen method kopyalama işlemini yapar
+ 
+//Person p1 = new (){Name = "Eyup",Age = 21};
+//Person p2 = (Person) p1.Clone();
+
+#endregion
+
+#region INotifyPropertyChanged
+
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
+Person p1 = new() { Name = "Eyup", Age = 21 };
+
+// INotifyPropertyChanged interface'i ile bir nesnenin property'si değiştiğinde bunu izleyebiliriz.
+// Bu interface'i kullanmak için PropertyChangedEventHandler adında bir event tanımlamamız gerekir. Bu event ilgili interfae'i implemente ettiğimizde kendi içerisinde tanımlanır.
+// Bu event'i kullanmak için ise PropertyChanged adında bir method tanımlamamız gerekir. Bu method ise PropertyChangedEventHandler adında bir parametre alır.
+// Bu parametre ise PropertyChangedEventHandler adında bir delegate'dir. Bu delegate ise object ve PropertyChangedEventArgs adında iki parametre alır.
+// Bu parametrelerden object olanı PropertyChangedEventHandler'ın sahibi olan nesnedir. PropertyChangedEventArgs ise değişen property'nin adını tutar.
+// KUllanımı ise aşağıdaki gibidir.
+p1.PropertyChanged += (sender, args) =>
+{
+    Console.WriteLine(args.PropertyName);
+};
+
+
+//yapılan bu işlemler ilgili class'ın içerisindeki prop'un get ve set'lerinin içerisinde yapılmalıdır.
+//set methodunun içerisinde yapılması doğru olacaktır.
+#endregion
+
+#region IEquatable
+
+
+
+#endregion
+
+
+public class Person : ICloneable, IComparable<Person> , INotifyPropertyChanged
+{
+    public string Name { get; set; }
+
+    //INotifyPropertyChanged interface'i ile bir nesnenin property'si değiştiğinde bunu izleyebiliriz.
+    private int age;
+    public int Age
+    {
+        get
+        {
+            return age;
+        }
+        set
+        {
+            age = value;
+            PropertyChanged(this, new(nameof(age)));
+        }
+    }
+
+    //IComparable interface'i ile bir nesneyi karşılaştırabiliriz. 
+    public int CompareTo(Person? other)
+    {
+        if (ReferenceEquals(this, other)) return 0;
+        if (ReferenceEquals(null, other)) return 1;
+        var nameComparison = string.Compare(Name, other.Name, StringComparison.Ordinal);
+        if (nameComparison != 0) return nameComparison;
+        
+        //Basit Şekilde Comparer etmek istersen aşağıdaki gibi yapabilirsin.
+        return Age.CompareTo(other.Age);
+    }
+
+    //IClonable interface'i ile bir nesneyi kopyalamak istediğimizde kullanabiliriz.
+    public object Clone()
+    {
+        throw new NotImplementedException();
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+}
+
+
+#endregion

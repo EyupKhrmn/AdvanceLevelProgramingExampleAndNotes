@@ -456,7 +456,7 @@ using System.Security.Cryptography;
 //    //IDisposable interface'i ile bir nesnenin bellekten silinmesini sağlar.
 //    public void Dispose()
 //    {
-//        // TODO release managed resources here
+//        // gereken işlemler yapılır.
 //    }
 //}
 

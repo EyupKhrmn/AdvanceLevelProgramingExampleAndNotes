@@ -369,10 +369,11 @@
 
 using System.Collections;
 using System.ComponentModel;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
-Person p1 = new() { Name = "Eyup", Age = 21 };
+//Person p1 = new() { Name = "Eyup", Age = 21 };
 
 // INotifyPropertyChanged interface'i ile bir nesnenin property'si değiştiğinde bunu izleyebiliriz.
 // Bu interface'i kullanmak için PropertyChangedEventHandler adında bir event tanımlamamız gerekir. Bu event ilgili interfae'i implemente ettiğimizde kendi içerisinde tanımlanır.
@@ -380,11 +381,10 @@ Person p1 = new() { Name = "Eyup", Age = 21 };
 // Bu parametre ise PropertyChangedEventHandler adında bir delegate'dir. Bu delegate ise object ve PropertyChangedEventArgs adında iki parametre alır.
 // Bu parametrelerden object olanı PropertyChangedEventHandler'ın sahibi olan nesnedir. PropertyChangedEventArgs ise değişen property'nin adını tutar.
 // KUllanımı ise aşağıdaki gibidir.
-p1.PropertyChanged += (sender, args) =>
-{
-    Console.WriteLine(args.PropertyName);
-};
-
+//p1.PropertyChanged += (sender, args) =>
+//{
+//    Console.WriteLine(args.PropertyName);
+//};
 
 //yapılan bu işlemler ilgili class'ın içerisindeki prop'un get ve set'lerinin içerisinde yapılmalıdır.
 //set methodunun içerisinde yapılması doğru olacaktır.
@@ -407,58 +407,110 @@ p1.PropertyChanged += (sender, args) =>
 
 #endregion
 
-public class Person : ICloneable, IComparable<Person> , INotifyPropertyChanged, IEnumerable, IDisposable
-{
-    public string Name { get; set; }
+//public class Person : ICloneable, IComparable<Person> , INotifyPropertyChanged, IEnumerable, IDisposable
+//{
+//    public string Name { get; set; }
+//
+//    //INotifyPropertyChanged interface'i ile bir nesnenin property'si değiştiğinde bunu izleyebiliriz.
+//    private int age;
+//    public int Age
+//    {
+//        get
+//        {
+//            return age;
+//        }
+//        set
+//        {
+//            age = value;
+//            PropertyChanged(this, new(nameof(age)));
+//        }
+//    }
+//
+//    //IComparable interface'i ile bir nesneyi karşılaştırabiliriz. 
+//    public int CompareTo(Person? other)
+//    {
+//        if (ReferenceEquals(this, other)) return 0;
+//        if (ReferenceEquals(null, other)) return 1;
+//        var nameComparison = string.Compare(Name, other.Name, StringComparison.Ordinal);
+//        if (nameComparison != 0) return nameComparison;
+//        
+//        //Basit Şekilde Comparer etmek istersen aşağıdaki gibi yapabilirsin.
+//        return Age.CompareTo(other.Age);
+//    }
+//
+//    //IClonable interface'i ile bir nesneyi kopyalamak istediğimizde kullanabiliriz.
+//    public object Clone()
+//    {
+//        return this.MemberwiseClone();
+//    }
+//
+//    public event PropertyChangedEventHandler? PropertyChanged;
+//    
+//    //IEnumarable interface'i ile bir nesnenin üzerinden foreach döngüsü ile dolaşmak istediğimizde kullanabiliriz.
+//    public IEnumerator GetEnumerator()
+//    {
+//        throw new NotImplementedException();
+//    }
+//
+//    
+//    //IDisposable interface'i ile bir nesnenin bellekten silinmesini sağlar.
+//    public void Dispose()
+//    {
+//        // TODO release managed resources here
+//    }
+//}
 
-    //INotifyPropertyChanged interface'i ile bir nesnenin property'si değiştiğinde bunu izleyebiliriz.
-    private int age;
-    public int Age
-    {
-        get
-        {
-            return age;
-        }
-        set
-        {
-            age = value;
-            PropertyChanged(this, new(nameof(age)));
-        }
-    }
 
-    //IComparable interface'i ile bir nesneyi karşılaştırabiliriz. 
-    public int CompareTo(Person? other)
-    {
-        if (ReferenceEquals(this, other)) return 0;
-        if (ReferenceEquals(null, other)) return 1;
-        var nameComparison = string.Compare(Name, other.Name, StringComparison.Ordinal);
-        if (nameComparison != 0) return nameComparison;
-        
-        //Basit Şekilde Comparer etmek istersen aşağıdaki gibi yapabilirsin.
-        return Age.CompareTo(other.Age);
-    }
+#endregion
 
-    //IClonable interface'i ile bir nesneyi kopyalamak istediğimizde kullanabiliriz.
-    public object Clone()
-    {
-        return this.MemberwiseClone();
-    }
+#region yield return
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-    
-    //IEnumarable interface'i ile bir nesnenin üzerinden foreach döngüsü ile dolaşmak istediğimizde kullanabiliriz.
-    public IEnumerator GetEnumerator()
-    {
-        throw new NotImplementedException();
-    }
+// yield return => bir methodun içerisinde birden fazla return ifadesi kullanmak istediğimizde kullanırız.
+// yield return => methodun içerisindeki return ifadesinden sonra methodun çalışması durur ve methodun çağırıldığı yere değer döndürür.
 
-    
-    //IDisposable interface'i ile bir nesnenin bellekten silinmesini sağlar.
-    public void Dispose()
-    {
-        // TODO release managed resources here
-    }
-}
+//IEnumerable<string> Deneme()
+//{
+//    yield return "deneme";
+//    yield return "Deneme2";
+//    yield return "Deneme3";
+//}
 
+#endregion
+
+#region Attribute Yapısı
+
+// Attribute kavramı sınflara veya methodlara özel bir yapı eklemek için geliştirilen bir yapıdır.
+// Bu yapılar genelde bir methodun veya sınıfın çalışma zamanında nasıl çalışacağını belirlemek için kullanılır.
+// Custım attribute oluşturulabilir.
+
+//[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
+//class MyAttribute : Attribute
+//{
+//    public string stringValue { get; set; }
+//    public int RETURN()
+//    {
+//        return 61;
+//    }
+//}
+//
+//
+//[My]
+//public class Trying
+//{
+//    
+//}
+
+//attribute kullanmak için ismindeki attribute alanını yazmaya gerek yoktur. Controller gibi.
+
+//herhangi bir sınıfı veya methodu verilen attribute değeri ile elde etmek için yani attribute'üne göre sıralamak için
+// Reflection kullanılır. Bunun için assambly seviyesinde sorgular yapılır 
+// o anki güncel assambly'nin tüm bilgilerine ulaşmak için aşağıdaki işlem yapılır.
+
+//Assembly assembly = Assembly.GetExecutingAssembly();
+//assembly.GetTypes()
+//    .Where(_=>_.GetCustomAttribute<MyAttribute>() is not null)
+//    .ToList();
+
+//şeklinde myattribute'ü olan tüm sınıfları getirir.
 
 #endregion

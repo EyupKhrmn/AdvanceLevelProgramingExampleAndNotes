@@ -514,3 +514,70 @@ using System.Security.Cryptography;
 //şeklinde myattribute'ü olan tüm sınıfları getirir.
 
 #endregion
+
+#region Reflection
+
+//reflection herhangi bir türlere ve bu türlerin verilerine erişmek için kullanılır.
+//reflection yöntemi ile o anki çalışan tüm türlerin değerlerine ve hangi türde olduklarına o an dinamilk olarak erişebiliriz.
+//bu sayede o anki değerleri okuyabilir ve üzerinden işlem yapabiliriz.
+//Aynı zamanda erişilen sınıfların veya herhangi bir türün içerisindeki private olan method, field veya prop'lara hatta o anki değerlerine bile erişebiliriz.
+
+
+//başka bir projeninde reflection'una o an arişebiliriz. Bunun için o projenin dll dosyasını projeye eklememiz yeterlidir. yani referans vermemiz gerekiyor.
+
+//Assembly assembly = Assembly.GetExecutingAssembly(); // o an ki reflection'a ulaşmak.
+
+//Assembly assembly1 = Assembly.Load(nameof("diğer projenin adı")); // başka bir projenin reflection'ına ulaşmak.
+
+
+//typeof();  //methodu da aslında bir reflection methodudur. o anki türün reflection'ına ulaşmak için kullanılır.
+
+
+// herhangi bir değerin içindeki prop'ları methodları veya memberları manipüle etmek istersek şöyle bir yapı kullanabiliriz:
+
+var myclass = new MyClass();
+
+Type type = typeof(MyClass);
+
+var prop = type.GetProperty(nameof(MyClass.Deneme));
+
+prop.SetValue(myclass, 61);
+
+// bu sayede değeri manipüle etmiş oluruz.
+
+//reflection ile bir methodu çalıştırmak istersek aşağıdaki gibi bir yapı kullanabiliriz.
+
+var method = type.GetMethod(nameof(MyClass.DenemeMethod));
+method.Invoke(myclass, null); //Bu şekilde methodu çalıştırmış oluruz. Eğer method parametre alıyorsa null yerine object dizisi ile parametereleri
+//gödermemiz gerekir.
+
+var method1 = type.GetMethod(nameof(MyClass.DenemeParameterMethod));
+method1.Invoke(myclass, new object[] { 61 });
+//şeklinde parametreleri veririz.
+
+
+//bir tipin içerisindeki private verilere de erişim sağlayabiliriz. Bunun için aşağıdaki gibi bir yapı kullanabiliriz.
+
+var members = type.GetMembers(BindingFlags.NonPublic | BindingFlags.Instance);
+
+members.ToList().ForEach(_=> Console.WriteLine(_.Name)); // şeklinde sınıf veya herhangi bir tür üzerinde private olan verilere dahi ulaşmış oluruz.
+
+public class MyClass
+{
+    public int Deneme { get; set; }
+    
+    public void DenemeMethod()
+    {
+        Console.WriteLine("Deneme");
+    }
+    
+    public void DenemeParameterMethod(int a)
+    {
+        Console.WriteLine(a);
+    }
+}
+
+
+
+
+#endregion

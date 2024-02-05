@@ -535,47 +535,49 @@ using System.Security.Cryptography;
 
 // herhangi bir değerin içindeki prop'ları methodları veya memberları manipüle etmek istersek şöyle bir yapı kullanabiliriz:
 
-var myclass = new MyClass();
-
-Type type = typeof(MyClass);
-
-var prop = type.GetProperty(nameof(MyClass.Deneme));
-
-prop.SetValue(myclass, 61);
+// var myclass = new MyClass();
+//
+// Type type = typeof(MyClass);
+//
+// var prop = type.GetProperty(nameof(MyClass.Deneme));
+//
+// prop.SetValue(myclass, 61);
 
 // bu sayede değeri manipüle etmiş oluruz.
 
 //reflection ile bir methodu çalıştırmak istersek aşağıdaki gibi bir yapı kullanabiliriz.
 
-var method = type.GetMethod(nameof(MyClass.DenemeMethod));
-method.Invoke(myclass, null); //Bu şekilde methodu çalıştırmış oluruz. Eğer method parametre alıyorsa null yerine object dizisi ile parametereleri
+// var method = type.GetMethod(nameof(MyClass.DenemeMethod));
+// method.Invoke(myclass, null); //Bu şekilde methodu çalıştırmış oluruz. Eğer method parametre alıyorsa null yerine object dizisi ile parametereleri
 //gödermemiz gerekir.
 
-var method1 = type.GetMethod(nameof(MyClass.DenemeParameterMethod));
-method1.Invoke(myclass, new object[] { 61 });
+// var method1 = type.GetMethod(nameof(MyClass.DenemeParameterMethod));
+// method1.Invoke(myclass, new object[] { 61 });
+
+// myclass.DenemeParameterMethod();
 //şeklinde parametreleri veririz.
 
 
 //bir tipin içerisindeki private verilere de erişim sağlayabiliriz. Bunun için aşağıdaki gibi bir yapı kullanabiliriz.
 
-var members = type.GetMembers(BindingFlags.NonPublic | BindingFlags.Instance);
+// var members = type.GetMembers(BindingFlags.NonPublic | BindingFlags.Instance);
+//
+// members.ToList().ForEach(_=> Console.WriteLine(_.Name)); // şeklinde sınıf veya herhangi bir tür üzerinde private olan verilere dahi ulaşmış oluruz.
 
-members.ToList().ForEach(_=> Console.WriteLine(_.Name)); // şeklinde sınıf veya herhangi bir tür üzerinde private olan verilere dahi ulaşmış oluruz.
-
-public class MyClass
-{
-    public int Deneme { get; set; }
-    
-    public void DenemeMethod()
-    {
-        Console.WriteLine("Deneme");
-    }
-    
-    public void DenemeParameterMethod(int a)
-    {
-        Console.WriteLine(a);
-    }
-}
+// public class MyClass
+// {
+//     public int Deneme { get; set; }
+//     
+//     public void DenemeMethod()
+//     {
+//         Console.WriteLine("Deneme");
+//     }
+//     
+//     public void DenemeParameterMethod(int a)
+//     {
+//         Console.WriteLine(a);
+//     }
+// }
 
 
 

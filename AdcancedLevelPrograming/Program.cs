@@ -369,6 +369,7 @@
 
 using System.Collections;
 using System.ComponentModel;
+using System.Reactive.Subjects;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
@@ -583,3 +584,135 @@ using System.Security.Cryptography;
 
 
 #endregion
+
+
+
+
+#region Async-MultiThreading Programing
+
+#region Thread Sınıfı
+
+//Yeni bir thread oluşturmak için Thread sınıfını kullanabiliriz. Bu sınıfın içerisinde ThreadStart adında bir delegate bulunur. Bu yöntemle yeni bir thread 
+//oluşturulur. ThreadStart delegate'i bir methodu temsil eder. Bu method geriye değer döndürmeyen ve parametre almayan bir method olmalıdır.
+//Tanımlanması ise şu şekildedir:
+
+// Thread thread = new(() =>
+// {
+//     
+// });
+
+//oluşturulan thread start() methodu ile çalıştırılır.
+
+#endregion
+
+
+#region IObserver Ve IObservable
+
+// Herhangi bir nesenenin durumu değiştiğinde bu durumu izlemek istediğimizde kullanılır.
+//diğer nesneler tarafından izlenen nesne IObservable interface'ini implemente etmelidir.
+//diğer nesneler ise IObserver interface'ini implemente etmelidir.
+// bu nesne bir natification göderdiğinde diğer nesneler bu natification'ı alır ve işlem yapar.
+//İşlemler aşağıdaki gibidir.
+
+
+// KUllnaımı ise şu şekildedir.
+
+// MyObservable observable = new();
+//
+// using (observable.Subscribe(new MyObserver()))
+// using (observable.Subscribe(new MyObserver()))
+// {
+//     observable.NotifyObservers(61);
+// }
+//
+// public class MyObservable : IObservable<int>
+// {
+//     private List<IObserver<int>> _observers = new();
+//     public IDisposable Subscribe(IObserver<int> observer)
+//     {
+//         if(!_observers.Contains(observer))
+//             _observers.Add(observer);
+//
+//         return new Unsubscription(() =>
+//         {
+//             _observers.Remove(observer);
+//             observer.OnCompleted();
+//         });
+//     }
+//
+//     public void NotifyObservers(int value)
+//         => _observers.ForEach(observer => observer.OnNext(value));
+// }
+//
+// internal class Unsubscription : IDisposable
+// {
+//     private Action unSubstricribe;
+//     public Unsubscription(Action unSubstricribe)
+//     {
+//         this.unSubstricribe = unSubstricribe;
+//     }
+//     
+//     public void Dispose()
+//     {
+//         unSubstricribe.Invoke();
+//         unSubstricribe = null;
+//     }
+// }
+//
+//
+// public class MyObserver : IObserver<int>
+// {
+//     public void OnCompleted()
+//     {
+//         Console.WriteLine("Sonlandı");
+//     }
+//
+//     public void OnError(Exception error)
+//     {
+//         Console.WriteLine("Hata");
+//     }
+//
+//     public void OnNext(int value)
+//     {
+//         Console.WriteLine(value);
+//     }
+// }
+
+
+// Şeklinde kullanılır. BUnun bir başka yolu da ISubject ınterface'idir. Bu interface IObservable ve IObserver interface'lerini implemente eder. Ve ikisini Birleştirir.
+
+// ISubject<int> subject = new Subject<int>();
+//
+// var aSubscribe = subject.Subscribe(new MyObserver());
+// var bSubscribe = subject.Subscribe(new MyObserver());
+//
+//
+// subject.OnNext(61);
+//
+// aSubscribe.Dispose();
+//
+// subject.OnNext(6161);
+//
+// class MyObserver : IObserver<int>
+// {
+//     public void OnCompleted()
+//     {
+//         Console.WriteLine("Sonlandı");
+//     }
+//
+//     public void OnError(Exception error)
+//     {
+//         Console.WriteLine("Hata");
+//     }
+//
+//     public void OnNext(int value)
+//     {
+//         Console.WriteLine(value);
+//     }
+// }
+
+//Şeklinde subject sınıfı ile kullanılabilir.
+
+#endregion
+
+#endregion"

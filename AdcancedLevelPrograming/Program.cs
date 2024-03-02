@@ -62,7 +62,7 @@
 
 // Genelde çok kullanılmaz ama bilinmesinde ve yapılabildiğini bilinmesinde fayda vardır.
 
-// Tür dönüşümlerinde sıkıntılar yaratabilir. object bir diziye strign bir dizi atandığında yine o diziye başka bir türde veriler atanabilir.
+// Tür dönüşümlerinde sıkıntılar yaratabilir. object bir diziye string bir dizi atandığında yine o diziye başka bir türde veriler atanabilir.
 // Buda tür dönüşümlerinde sıkıntı olabilir.
 
 // Interface ve class yapılanmalarında bu işlemleri kullanmak için gerekli olan keyword "out" 'dur. 
@@ -369,9 +369,12 @@
 
 using System.Collections;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Reactive.Subjects;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Security;
 using System.Security.Cryptography;
 
 //Person p1 = new() { Name = "Eyup", Age = 21 };
@@ -482,7 +485,7 @@ using System.Security.Cryptography;
 
 // Attribute kavramı sınflara veya methodlara özel bir yapı eklemek için geliştirilen bir yapıdır.
 // Bu yapılar genelde bir methodun veya sınıfın çalışma zamanında nasıl çalışacağını belirlemek için kullanılır.
-// Custım attribute oluşturulabilir.
+// Custom attribute oluşturulabilir.
 
 //[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
 //class MyAttribute : Attribute
@@ -585,8 +588,85 @@ using System.Security.Cryptography;
 
 #endregion
 
+#region SecureString Sınıfı
+
+//SecureString sınıfı nedir anlamak için ilk önce string sınıfının ne olduğunu anlamamız gerekir.
+// string herhangi bir değişken aslında değiştirilemez şekilde oluşturulur ve bellekte tutulur.
+//Bu değişkenini üzerinde herhangi bir manipülasyon  yapılırsa aslında direkt bellekteki o string değişken değişmez.
+//onun yerine kopyası oluşturulur ve manipülasyonlar o kopya üzerinde yapılır. Bu sayede bellekteki o değişkenin değeri değişmemiş olur.
+// bunun kötü yani da eski stringin bellekte boş yer tutmasıdır. Üstelik tutulan bu string değer hassas veri de içerebilir.
+//Tam olarak bunu önlemek için SecureString sınıfı kullanılır. Örneğin bir Banka kartı numarasını güvenilir şekilde bellekte tutmak istediğimizde:
+
+string cardNumber = "1234567891234567"; // bu şekilde bellekte tutulmamalıdır.
+
+SecureString secureString = new();
+cardNumber.ToList().ForEach(_=> secureString.AppendChar(_)); // bu şekilde bellekte tutulmalıdır.
+secureString.MakeReadOnly();
+
+//daha sonra bu verilere erişmek için ise şu yöntem kullanılır:
 
 
+IntPtr ptr = Marshal.SecureStringToBSTR(secureString);
+string? value = Marshal.PtrToStringUni(ptr);
+Console.WriteLine(value);
+
+//şeklinde erişim yapılabilir.
+
+#endregion
+
+#region EventLog ile olay görüntüleyici(windows event viewer) üzerinden olayları okuma
+
+//const string EventLogSourge = "MyApplicationExample";
+//
+//string logName = "MyApplicationLog";
+//
+//if(!EventLog.SourceExists(EventLogSourge))
+//    EventLog.CreateEventSource(EventLogSourge, logName);
+//
+//string logMessage = $"event log {DateTime.Now}";
+//
+//Console.WriteLine(logMessage);
+//
+//EventLog.WriteEntry(EventLogSourge,logMessage, EventenrtyType.Information);
+//Console.WriteLine("Log yazdırıldı.");
+//
+//Process.Start("eventvwr.exe"); // event weaver'ı açmak için kullanılır.
+
+#endregion
+
+
+#region EfCorePerformance Tips
+
+//1. AsNoTracking() => Bu method ile birlikte gelen verilerin takibi yapılmaz. Bu sayede bellekte daha az yer kaplar ve daha hızlı çalışır.
+//2. Select() => Bu method ile birlikte gelen verilerin sadece istenilen verileri alınır. Bu sayede daha az veri alınır ve daha hızlı çalışır. Ve bunun indekslenmesi daha hızlı olur.
+//3. Include() => Bu method ile birlikte gelen verilerin ilişkili olan verileri alınır. Bu sayede daha az veri alınır ve daha hızlı çalışır. Onun yerine direk ilişkili olan verileri include etmiş gibi alırsak daha hızlı çalışır.
+//4. AsSiplitQuery() => Bu method sorguları join ile değildi birbirinden ayrı şekilde gerçekleştirir. Bu sayede daha hızlı çalışır.
+
+//5. Pagination => Sorguları sayfalama yaparak daha hızlı çalışmasını sağlayabiliriz. Bu sayede daha az veri alınır ve daha hızlı çalışır.
+#region Pagination
+
+// const int Page = 1;
+// const int PageSize = 10;
+
+//sorguyu IQuaryable olarak almak daha hızlıdır.
+// var sales = await _context.Sales
+//     .Select(_ => new
+//     {
+//         _.Id,
+//         _.Date,
+//         _.Total,
+//         _.Customer.Name
+//     });
+//
+// //Daha sonra sorguyu aşağıdaki gibi pagine edebiliriz.
+// var pagedSales = sales
+//     .skip((Page - 1) * PageSize)
+//     .take(PageSize)
+//     .tolist();
+
+#endregion
+
+#endregion
 
 #region Async-MultiThreading Programing
 
@@ -715,4 +795,4 @@ using System.Security.Cryptography;
 
 #endregion
 
-#endregion"
+#endregion

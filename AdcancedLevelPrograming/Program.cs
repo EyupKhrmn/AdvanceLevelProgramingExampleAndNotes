@@ -31,6 +31,7 @@
 
 //Herhangi iki aynı olmayan sınıf içerisinde birbirine cast işlemini ister gizli(implicit) ister Explicit olacak şekilde tasarlayabiliriz
 //Bunu yapmak için ise bahsi geçen iki sınıfın herhangi birinde aşağıda olan methodu tanımlamak yeterli olacaktır.
+//Gizli olmayan tür dönüşümü methodlar veya operatörler ile yapılabilir
 // b B = new b();
 // a A = B;
 //
